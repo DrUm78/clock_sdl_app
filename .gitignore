@@ -2,3 +2,5 @@
 *.gcda
 *.opk
 *.elf
+clock
+opk/clock

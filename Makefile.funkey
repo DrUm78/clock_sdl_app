@@ -1,5 +1,5 @@
-PRGNAME     = test.elf
-CC			= /opt/funkey-toolchain/usr/bin/arm-linux-gcc
+PRGNAME     = clock
+CC			= /opt/FunKey-sdk/usr/bin/arm-funkey-linux-musleabihf-gcc
 
 OBJS		= main.o font/font_drawing.o
 CFLAGS		= -Os -std=gnu99 -I. -Ifont

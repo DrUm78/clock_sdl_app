@@ -1,31 +1,13 @@
 #!/bin/sh
 
-mkdir -p opk
-cp ./test.elf opk/test.elf
-cp ./icon.png opk/icon.png
+rm -f *.opk
 
-# https://unix.stackexchange.com/questions/219268/how-to-add-new-lines-when-using-echo
-print()
-	case    ${IFS- } in
-	(\ *)   printf  %b\\n "$*";;
-	(*)     IFS=\ $IFS
-	printf  %b\\n "$*"
-	IFS=${IFS#?}
-esac
+make clean
+make -f Makefile.funkey
+/opt/FunKey-sdk/bin/arm-funkey-linux-musleabihf-strip clock
 
-# Create GmenuNx entry file plus other things
+cp ./clock opk/
 
-print '[Desktop Entry]
-Type=Application
-Name=Clock app
-Comment=Set the time
-Exec=test.elf
-Icon=icon
-Terminal=false
-Type=Application
-Categories=applications;
-X-OD-NeedsDownscaling=true' > opk/default."$1".desktop
+mksquashfs ./opk clock_funkey-s.opk -all-root -noappend -no-exports -no-xattrs
 
-mksquashfs ./opk clock_app_"$1".opk -all-root -noappend -no-exports -no-xattrs
-
-rm -r opk
+rm -f opk/clock

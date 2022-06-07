@@ -165,7 +165,7 @@ int main (int argc, char *argv[])
 					switch(event.key.keysym.sym) 
 					{
 						/* SDLK_HOME for OD needs the Power button to be detected upon release. */
-						case SDLK_HOME:
+						case SDLK_q:
 							quit = 1;
 						break;
 						default:
@@ -175,7 +175,7 @@ int main (int argc, char *argv[])
 				case SDL_KEYDOWN:
 					switch(event.key.keysym.sym) 
 					{
-						case SDLK_UP:
+						case SDLK_u:
 						switch(select_cursor)
 						{
 							case 0:
@@ -198,7 +198,7 @@ int main (int argc, char *argv[])
 							break;
 						}
 						break;
-						case SDLK_DOWN:
+						case SDLK_d:
 						switch(select_cursor)
 						{
 							case 0:
@@ -221,15 +221,15 @@ int main (int argc, char *argv[])
 							break;
 						}
 						break;
-						case SDLK_LEFT:
+						case SDLK_l:
 						select_cursor--;
 						if (select_cursor < 0) select_cursor = 0;
 						break;
-						case SDLK_RIGHT:
+						case SDLK_r:
 						select_cursor++;
 						if (select_cursor > 5) select_cursor = 5;
 						break;
-						case SDLK_RETURN:
+						case SDLK_s:
 							quit = 1;
 							update_clock = 1;
 						break;
@@ -237,7 +237,7 @@ int main (int argc, char *argv[])
 						break;
 					}
 				break;
-				case SDL_QUIT:
+				case SDLK_q:
 					quit = 1;
 				break;
 			}
@@ -249,7 +249,7 @@ int main (int argc, char *argv[])
 		
 		SDL_FillRect(backbuffer, NULL, 0);
 		
-		print_string("Please set the Clock", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 5, backbuffer->pixels);
+		print_string("Set time and date", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 5, backbuffer->pixels);
 		
 		/* Make sure to add the zeros for the day and month if they are inferior to 10 */
 		if (date_selected < 10)
@@ -275,7 +275,9 @@ int main (int argc, char *argv[])
 		
 		print_string("^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 50, backbuffer->pixels);
 		
-		print_string("Start : Quit/Update time", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 70, backbuffer->pixels);
+		print_string("START: Update and quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 70, backbuffer->pixels);
+		
+		print_string("MENU: Quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 90, backbuffer->pixels);
 		
 		/* Print back buffer to the final screen */
 		SDL_BlitSurface(backbuffer, NULL, sdl_screen, NULL);
