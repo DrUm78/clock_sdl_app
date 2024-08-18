@@ -249,7 +249,7 @@ int main (int argc, char *argv[])
 		
 		SDL_FillRect(backbuffer, NULL, 0);
 		
-		print_string("Set time and date", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 5, backbuffer->pixels);
+		print_string("Set time and date", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 74, backbuffer->pixels);
 		
 		/* Make sure to add the zeros for the day and month if they are inferior to 10 */
 		if (date_selected < 10)
@@ -271,13 +271,13 @@ int main (int argc, char *argv[])
 		}
 		
 		snprintf(tmp_str, sizeof(tmp_str), "%s / %s / %d %d : %d : %d", string_tmp[0], string_tmp[1], year_selected, hour_selected, minute_selected, seconds_selected);
-		print_string(tmp_str, SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 30, backbuffer->pixels);
+		print_string(tmp_str, SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 99, backbuffer->pixels);
 		
-		print_string("^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 50, backbuffer->pixels);
+		print_string("^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 119, backbuffer->pixels);
 		
-		print_string("START: Update and quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 70, backbuffer->pixels);
+		print_string("START: Update and quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 139, backbuffer->pixels);
 		
-		print_string("MENU: Quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 90, backbuffer->pixels);
+		print_string("MENU: Quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 159, backbuffer->pixels);
 		
 		/* Print back buffer to the final screen */
 		SDL_BlitSurface(backbuffer, NULL, sdl_screen, NULL);
