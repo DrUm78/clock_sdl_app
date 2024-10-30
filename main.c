@@ -81,15 +81,15 @@ static void Dont_go_over_days()
 		case 3:
 		case 5:
 		case 7:
-		case 9:
-		case 11:
+		case 8:
+		case 10:
+		case 12:
 			if (date_selected > 31) date_selected = 31;
 		break;
 		case 4:
 		case 6:
-		case 8:
-		case 10:
-		case 12:
+		case 9:
+		case 11:
 			if (date_selected > 30) date_selected = 30;
 		break;
 		case 2:
