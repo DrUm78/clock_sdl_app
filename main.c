@@ -270,10 +270,19 @@ int main (int argc, char *argv[])
 			snprintf(string_tmp[1], sizeof(string_tmp[1]), "%d", month_selected);	
 		}
 		
-		snprintf(tmp_str, sizeof(tmp_str), "%s / %s / %d %d : %d : %d", string_tmp[0], string_tmp[1], year_selected, hour_selected, minute_selected, seconds_selected);
+		char hour_str[3], min_str[3], sec_str[3];
+		if (hour_selected < 10)   snprintf(hour_str, sizeof(hour_str), "0%d", hour_selected); else snprintf(hour_str, sizeof(hour_str), "%d", hour_selected);
+		if (minute_selected < 10)  snprintf(min_str,  sizeof(min_str),  "0%d", minute_selected); else snprintf(min_str,  sizeof(min_str),  "%d", minute_selected);
+		if (seconds_selected < 10) snprintf(sec_str,  sizeof(sec_str),  "0%d", seconds_selected); else snprintf(sec_str,  sizeof(sec_str),  "%d", seconds_selected);
+
+		snprintf(tmp_str, sizeof(tmp_str), "%s / %s / %d %s : %s : %s", string_tmp[0], string_tmp[1], year_selected, hour_str, min_str, sec_str);
 		print_string(tmp_str, SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 99, backbuffer->pixels);
 		
-		print_string("^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 119, backbuffer->pixels);
+		if (select_cursor == 2) {
+			print_string("^^^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 119, backbuffer->pixels);
+		} else {
+			print_string("^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 119, backbuffer->pixels);
+		}
 		
 		print_string("START: Update and quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 139, backbuffer->pixels);
 		
