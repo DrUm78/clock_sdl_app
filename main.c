@@ -54,27 +54,27 @@ static void Dont_go_over_days()
 	{
 		date_selected = 1;
 	}
-	
+
 	if (month_selected > 12)
 	{
 		month_selected = 12;
 	}
-	
+
 	if (month_selected < 1)
 	{
 		month_selected = 1;
 	}
-	
+
 	if (year_selected > 2100)
 	{
 		year_selected = 2100;
 	}
-	
+
 	if (year_selected < 1970)
 	{
 		year_selected = 1970;
 	}
-	
+
 	switch(month_selected)
 	{
 		case 1:
@@ -110,12 +110,12 @@ static void Dont_go_over_hour()
 	{
 		hour_selected = 0;
 	}
-	
+
 	if (minute_selected > 59)
 	{
 		minute_selected = 0;
 	}
-	
+
 	if (seconds_selected > 59)
 	{
 		seconds_selected = 0;
@@ -145,16 +145,16 @@ int main (int argc, char *argv[])
 
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
-	
+
 	date_selected = tm.tm_mday;
 	month_selected = tm.tm_mon + 1;
 	year_selected = tm.tm_year + 1900;
 	hour_selected = tm.tm_hour;
 	minute_selected = tm.tm_min;
 	seconds_selected = tm.tm_sec;
-	
+
 	SDL_EnableKeyRepeat(500, 50);
-	
+
 	while(!quit)
 	{
 		while (SDL_PollEvent(&event)) 
@@ -242,15 +242,15 @@ int main (int argc, char *argv[])
 				break;
 			}
 		}
-		
+
 		Check_leap_year();
 		Dont_go_over_days();
 		Dont_go_over_hour();
-		
+
 		SDL_FillRect(backbuffer, NULL, 0);
-		
+
 		print_string("Set time and date", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 74, backbuffer->pixels);
-		
+
 		/* Make sure to add the zeros for the day and month if they are inferior to 10 */
 		if (date_selected < 10)
 		{
@@ -269,32 +269,61 @@ int main (int argc, char *argv[])
 		{
 			snprintf(string_tmp[1], sizeof(string_tmp[1]), "%d", month_selected);	
 		}
-		
+
 		char hour_str[3], min_str[3], sec_str[3];
-		if (hour_selected < 10)   snprintf(hour_str, sizeof(hour_str), "0%d", hour_selected); else snprintf(hour_str, sizeof(hour_str), "%d", hour_selected);
-		if (minute_selected < 10)  snprintf(min_str,  sizeof(min_str),  "0%d", minute_selected); else snprintf(min_str,  sizeof(min_str),  "%d", minute_selected);
-		if (seconds_selected < 10) snprintf(sec_str,  sizeof(sec_str),  "0%d", seconds_selected); else snprintf(sec_str,  sizeof(sec_str),  "%d", seconds_selected);
+		if (hour_selected < 10)
+		{
+			snprintf(hour_str, sizeof(hour_str), "0%d", hour_selected);
+		}
+		else
+		{
+			snprintf(hour_str, sizeof(hour_str), "%d", hour_selected);
+		}
+
+		if (minute_selected < 10)
+		{
+			snprintf(min_str,  sizeof(min_str),  "0%d", minute_selected);
+		}
+		else
+		{
+			snprintf(min_str,  sizeof(min_str),  "%d", minute_selected);
+		}
+
+		if (seconds_selected < 10)
+		{
+			snprintf(sec_str,  sizeof(sec_str),  "0%d", seconds_selected);
+		}
+		else
+		{
+			snprintf(sec_str,  sizeof(sec_str),  "%d", seconds_selected);
+		}
 
 		snprintf(tmp_str, sizeof(tmp_str), "%s / %s / %d %s : %s : %s", string_tmp[0], string_tmp[1], year_selected, hour_str, min_str, sec_str);
 		print_string(tmp_str, SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 99, backbuffer->pixels);
-		
-		if (select_cursor == 2) {
+
+		if (select_cursor == 2)
+		{
 			print_string("^^^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 119, backbuffer->pixels);
-		} else {
+		}
+		else
+		{
 			print_string("^^", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20 + (select_cursor * 40), 119, backbuffer->pixels);
 		}
-		
+
 		print_string("START: Update and quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 139, backbuffer->pixels);
-		
+
 		print_string("MENU: Quit", SDL_MapRGB(sdl_screen->format,255,255,255), 0, 20, 159, backbuffer->pixels);
-		
+
 		/* Print back buffer to the final screen */
 		SDL_BlitSurface(backbuffer, NULL, sdl_screen, NULL);
-		
+
 		/* Flip the screen so it gets displayed*/
 		SDL_Flip(sdl_screen);
+
+		/* Delay to limit CPU usage */
+		SDL_Delay(16); /* ~60 FPS (1000ms/60 ≈ 16ms) */
 	}
-	
+
 	/* Make sure to clean up the allocated surfaces before exiting.
 	 * Most of the time when an SDL app leaks, it's for that reason.
 	 * */
@@ -308,14 +337,14 @@ int main (int argc, char *argv[])
 		SDL_FreeSurface(backbuffer);
 		backbuffer = NULL;
 	}
-	
+
 	SDL_Quit();
-	
+
 	if (update_clock == 1)
 	{
 		snprintf(final_long_string, sizeof(final_long_string), "date -s '%d-%d-%d %d:%d:%d';hwclock --utc -w", year_selected, month_selected, date_selected, hour_selected, minute_selected, seconds_selected);
 		execlp("/bin/sh","/bin/sh", "-c", final_long_string, (char *)NULL);
 	}
-	
+
 	return 0;
 }
